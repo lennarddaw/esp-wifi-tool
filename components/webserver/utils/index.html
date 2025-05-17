@@ -4,21 +4,186 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>ESP32 Management AP</title>
     <style>
-        body {
-            width: fit-content;
-        }
-        table, tr, th {
-            border: 1px solid;
-            border-collapse: collapse;
-            text-align: center;
-        }
-        th, td {
-            padding:10px;
-        }
-        tr:hover, tr.selected {
-            background-color: lightblue;
-            cursor:pointer;
-        }
+        :root {
+  --bg: #121212;
+  --fg: #e0e0e0;
+  --fg-light: #bbbbbb;
+  --primary: #bb86fc;
+  --primary-hover: #9a6ef2;
+  --border: #333;
+  --highlight: #1f1f1f;
+  --error: #cf6679;
+  --radius: 0.5rem;
+  --transition: 0.2s ease-in-out;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--fg);
+  line-height: 1.5;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+h1, h2 {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+}
+
+section {
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 2rem;
+  background: var(--highlight);
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+fieldset {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+legend {
+  padding: 0 0.5rem;
+  font-weight: 600;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--fg-light);
+}
+
+input[type="number"],
+select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--fg);
+  transition: border var(--transition);
+  margin-bottom: 1rem;
+}
+
+input[type="number"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+button {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--bg);
+  background: var(--primary);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+}
+
+button:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+#error, #errors {
+  color: var(--error);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Tabelle im Card-Stil */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+th, td {
+  padding: 0.75rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  background: var(--highlight);
+  font-weight: 600;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover {
+  background: #1e1e1e;
+  cursor: pointer;
+}
+
+/* Status-Abschnitte */
+#loading {
+  text-align: center;
+  font-style: italic;
+  color: var(--fg-light);
+}
+
+/* Result-Anzeige */
+#result-meta {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+code {
+  background: #1f1f1f;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: monospace;
+}
+
+/* Responsives Verhalten */
+@media (max-width: 600px) {
+  section {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+}
     </style>
 </head>
 <body onLoad="getStatus()">
