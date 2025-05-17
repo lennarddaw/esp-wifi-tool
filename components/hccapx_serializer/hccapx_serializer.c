@@ -16,6 +16,7 @@
 #include "frame_analyzer.h"
 #include "frame_analyzer_types.h"
 #include "frame_analyzer_parser.h"
+#include "lwip/inet.h"
 
 /**
  * @brief Constants based on reference
