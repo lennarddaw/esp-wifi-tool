@@ -184,6 +184,19 @@ code {
     font-size: 1.5rem;
   }
 }
+tr.selected {
+  /* farbige Umrandung */
+  outline: 2px solid var(--primary);
+  outline-offset: -1px;
+  /* leicht abgehobener Hintergrund */
+  background-color: var(--highlight);
+}
+
+/* Hover-Effekt nur für nicht-ausgewählte Zeilen */
+tr:hover:not(.selected) {
+  background-color: #1e1e1e;
+  cursor: pointer;
+}
     </style>
 </head>
 <body onLoad="getStatus()">
